@@ -1,8 +1,8 @@
 package com.wu.wechatpay.rest.service;
 
-import com.wu.wechatpay.rest.entity.WechatRest;
+import com.wu.wechatpay.rest.entity.WechatOrderVO;
 
 public interface WechatRestService {
 
-	WechatRest getTestRest();
+	String unifiedOrder(WechatOrderVO wechatOrderVO, String remoteAddr);
 }
