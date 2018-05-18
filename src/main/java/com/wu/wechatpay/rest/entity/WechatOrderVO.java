@@ -1,5 +1,7 @@
 package com.wu.wechatpay.rest.entity;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class WechatOrderVO {
 
 	/**
@@ -9,6 +11,7 @@ public class WechatOrderVO {
 	 * wxd678efh567hg6787
 	 * 必填
 	 */
+	@Value("${wechat.appid}")
 	private String appid;
 
 	/**
@@ -18,6 +21,7 @@ public class WechatOrderVO {
 	 * 1230000109
 	 * 必填
 	 */
+	@Value("${wechat.mch_id}")
 	private String mch_id;
 
 	/**
@@ -77,6 +81,7 @@ public class WechatOrderVO {
 	 * http://www.weixin.qq.com/wxpay/pay.php
 	 * 必填
 	 */
+	@Value("${wechat.notify_url}")
 	private String notify_url;
 
 	/**

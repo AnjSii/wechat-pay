@@ -1,0 +1,117 @@
+<html>
+<head>
+	<title>toPay</title>
+	<script src="$!webPath/resources/js/jquery/1.6.2/jquery-1.6.2.js"></script>
+	<style>
+		.main{
+			text-align: center; /*让div内部文字居中*/
+			background-color: #fff;
+			border-radius: 20px;
+			width: 300px;
+			height: 350px;
+			margin: auto;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+	</style>
+	<script>
+		var polling;
+		jQuery(document).ready(function() {
+			wechatpay_QRCode();
+		});
+			function wechatpay_QRCode() {
+				jQuery.ajax({
+					type: 'GET',
+					url: '$!webPath/wechatpay_QRCode.htm',
+					success: function (data) {
+						console.log(data);
+						if (data.QRCode != undefined && data.QRCode != "" && data.QRCode != null) {
+							jQuery("#QRCode").attr("src", "data:image/jpg;base64," + data.QRCode);
+							startPolling();
+							jQuery("#QRCodeDiv").show();
+						} else {
+							if (data.err_code != undefined && data.err_code != "" && data.err_code != null) {
+								jQuery("#notify").html("不能生成二维码，错误代码：" + data.err_code + "，错误信息：" + data.err_code_des)
+							} else if (data.return_msg != undefined && data.return_msg != "" && data.return_msg != null) {
+								jQuery("#notify").html("不能生成二维码，错误信息：" + data.return_msg)
+							}
+							jQuery("#notifyDiv").show();
+						}
+					},
+					dataType:"json"
+				});
+			}
+		//开启轮询
+		function startPolling() {
+			//使用定时器轮询，每1秒轮询一次
+			if (!polling) {
+				polling = setInterval(wechatpay_OrderCheck, 1000);
+			}
+		}
+		//关闭轮询
+		function stopPolling() {
+			if (polling) {
+				clearInterval(polling);
+				polling = false;
+			}
+		}
+		function wechatpay_OrderCheck() {
+			jQuery.ajax({
+				type: 'GET',
+				url: '$!webPath/wechatpay_OrderCheck.htm',
+				success: function(data) {
+					switch (data.trade_state) {
+						case "SUCCESS":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+						case "FAIL":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+						case "REFUND":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+						case "CLOSED":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+						case "REVOKED":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+						case "USERPAYING":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+						case "PAYERROR":
+							stopPolling();
+							postTheForm(data.trade_des);
+							break;
+					}
+				},
+				dataType: 'json'
+			});
+		}
+		function postTheForm(message) {
+			jQuery("#message").val(message);
+			jQuery("#theForm").submit();
+		}
+	</script>
+</head>
+<body>
+	<div class="main" id="QRCodeDiv" style="display: none">
+		<img src="" id="QRCode">
+	</div>
+	<div class="main" id="notifyDiv" style="display: none">
+		<div id="notify" style="margin-top: 100px"></div>
+	</div>
+	<form action="$!webPath/wechatpay_notify.htm" method="post" id="theForm">
+		<input name="message" id="message" value="">
+	</form>
+</body>
+</html>

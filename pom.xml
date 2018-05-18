@@ -92,12 +92,17 @@
 			<artifactId>javase</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.swetake</groupId>
+			<artifactId>qrcode</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 		<!-- httpclient -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.4.1</version>s
+			<version>4.4.1</version>
 		</dependency>
 
 		<!-- nnutz -->
@@ -154,6 +159,12 @@
 			<artifactId>javaee-api</artifactId>
 			<version>6.0</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
 		</dependency>
 	</dependencies>
 
